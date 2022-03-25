@@ -1,0 +1,16 @@
+version: '2'
+services:
+  PostgreSQL:
+    container_name: 'pgsql'
+    image: postgres:13.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
