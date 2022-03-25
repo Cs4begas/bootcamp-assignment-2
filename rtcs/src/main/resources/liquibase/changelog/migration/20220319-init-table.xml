@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+	<changeSet id="Migration-table" author="Nattapan Meepiean">
+		<createTable tableName="qrcode">
+			<column name="uuid"  type="uuid" defaultValue="gen_random_uuid()">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="qrcode_system_type_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="qrcode_detail">
+			<column name="qrcode"  type="uuid">
+				<constraints nullable="false" />
+			</column>
+			<column name="sender_branch" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="receiver_branch" type="int">
+				<constraints nullable="false"/>
+			</column>
+			<column name="amount" type="decimal">
+				<constraints nullable="false"/>
+			</column>
+			<column name="currency" type="varchar(3)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_at" type="datetime" defaultValue="now()"></column>
+		</createTable>
+
+		<createTable tableName="branch">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true"></constraints>
+			</column>
+			<column name="name" type="text">
+				<constraints nullable="false"/>
+			</column>
+			<column name="location" type="text">
+				<constraints nullable="false"/>
+			</column>
+			<column name="created_at" type="datetime" defaultValue="now()"></column>
+		</createTable>
+
+
+		<createTable tableName="cash_management">
+			<column name="id"  type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="qrcode"  type="uuid">
+				<constraints nullable="false" />
+			</column>
+			<column name="thai_amount" type="decimal">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_at" type="datetime" defaultValue="now()"></column>
+			<column name="branch_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="qrcode_system_type">
+			<column name="id"  type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="description"  type="varchar">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<createTable tableName="log_change_currency">
+			<column name="id"  type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="qrcode"  type="uuid">
+				<constraints nullable="false" />
+			</column>
+			<column name="amount" type="decimal">
+				<constraints nullable="false"/>
+			</column>
+			<column name="currency" type="varchar(3)"></column>
+			<column name="changed_amount" type="decimal"></column>
+			<column name="changed_currency" type="varchar(3)"></column>
+			<column name="created_at" type="datetime" defaultValue="now()"></column>
+		</createTable>
+
+		<createTable tableName="car">
+			<column name="id"  type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="license"  type="text">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_at" type="datetime" defaultValue="now()"></column>
+		</createTable>
+
+		<createTable tableName="qrcode_route_tracking">
+			<column name="id"  type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="qrcode"  type="uuid">
+				<constraints nullable="false" />
+			</column>
+			<column name="car_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="is_recived"  type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="is_sent"  type="boolean">
+				<constraints nullable="false" />
+			</column>
+			<column name="created_at" type="datetime" defaultValue="now()"></column>
+			<column name="created_by" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="updated_at" type="datetime"></column>
+			<column name="updated_by" type="int"></column>
+		</createTable>
+	</changeSet>
+	<changeSet id="Add-relation-foreign-key" author="Nattapan Meepiean">
+		<addForeignKeyConstraint baseColumnNames="sender_branch"
+								 baseTableName="qrcode_detail"
+								 referencedTableName="branch"
+								 referencedColumnNames="id"
+								 constraintName="fk_sender_branch"/>
+
+		<addForeignKeyConstraint baseColumnNames="receiver_branch"
+								 baseTableName="qrcode_detail"
+								 referencedTableName="branch"
+								 referencedColumnNames="id"
+								 constraintName="fk_receiver_branch"/>
+
+		<addForeignKeyConstraint baseColumnNames="branch_id"
+								 baseTableName="cash_management"
+								 referencedTableName="branch"
+								 referencedColumnNames="id"
+								 constraintName="fk_cash_management_branch"/>
+
+		<addForeignKeyConstraint baseColumnNames="car_id"
+								 baseTableName="qrcode_route_tracking"
+								 referencedTableName="car"
+								 referencedColumnNames="id"
+								 constraintName="fk_car_id"/>
+
+		<addForeignKeyConstraint baseColumnNames="updated_by"
+								 baseTableName="qrcode_route_tracking"
+								 referencedTableName="car"
+								 referencedColumnNames="id"
+								 constraintName="fk_updated_car"/>
+
+		<addForeignKeyConstraint baseColumnNames="qrcode"
+								 baseTableName="log_change_currency"
+								 referencedTableName="qrcode"
+								 referencedColumnNames="uuid"
+								 constraintName="fk_qrcode"/>
+
+		<addForeignKeyConstraint baseColumnNames="qrcode_system_type_id"
+								 baseTableName="qrcode"
+								 referencedTableName="qrcode_system_type"
+								 referencedColumnNames="id"
+								 constraintName="fk_qrcode_system_type"/>
+	</changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="Seed-data-table-car" author="Nattapan Meepiean" >
+        <sql>
+            <![CDATA[
+        INSERT INTO rtcs.car (license, created_at) VALUES('กม5312', now());
+
+        INSERT INTO rtcs.car (license, created_at) VALUES('กพ2564', now());
+
+        INSERT INTO rtcs.car (license, created_at) VALUES('กย2952', now());
+
+]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="Seed-data-table-branch" author="Nattapan Meepiean" >
+        <sql>
+            <![CDATA[
+       INSERT INTO rtcs.branch ("name", "location", created_at) VALUES('Cash Center', 'เลขที่ 388/4 ถนนสายไหม แขวงสายไหม เขตสายไหม จังหวัดกรุงเทพมหานคร รหัสไปรษณีย์ 10220', now());
+       INSERT INTO rtcs.branch ("name", "location", created_at) VALUES('สาขาสะพานใหม่ ดอนเมือง', 'เลขที่ 342/89-90 หมู่ที่ 7 ถนนพหลโยธิน แขวงอนุสาวรีย์ เขตบางเขน จังหวัดกรุงเทพมหานคร รหัสไปรษณีย์ 10220', now());
+       INSERT INTO rtcs.branch ("name", "location", created_at) VALUES('สาขาเซ็นทรัล ลาดพร้าว', 'เลขที่ 1697 อาคารศูนย์การค้าเซ็นทรัล พลาซา ชั้น 2 ห้องเลขที่ 224 ถนนพหลโยธิน แขวงจตุจักร เขตจตุจักร จังหวัดกรุงเทพมหานคร รหัสไปรษณีย์ 10900', now());
+       INSERT INTO rtcs.branch ("name", "location", created_at) VALUES('สาขาบิ๊กซี สะพานควาย', 'เลขที่ 618/1 อาคารบิ๊กซี ซูเปอร์เซ็นเตอร์ ชั้น B ห้องเลขที่ BCR023/1 ถนนพหลโยธิน แขวงสามเสนใน เขตพญาไท จังหวัดกรุงเทพมหานคร รหัสไปรษณีย์ 10400', now());
+]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="Seed-data-table-qrcode_system_type" author="Nattapan Meepiean" >
+        <sql>
+            <![CDATA[
+     INSERT INTO rtcs.qrcode_system_type (description) VALUES('DPTELLER');
+     INSERT INTO rtcs.qrcode_system_type (description) VALUES('RTCS');
+
+]]>
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>
